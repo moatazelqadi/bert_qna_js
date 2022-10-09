@@ -1,32 +1,17 @@
-<script setup>
+
+<script>
 import * as tf from '@tensorflow/tfjs'
 import * as qna from '@tensorflow-models/qna'
 import 'bootstrap/dist/css/bootstrap.min.css'
-
-import { ref } from 'vue'
-
-defineProps({
-  msg: String
-})
-
-const count = ref(0)
-</script>
-
-<script>
 export default {
   name: 'QnA',
   data() {
     return {
-
-      question: "How did Nasdaq do?",
-      passage: `U.S. stocks cratered on Friday in their worst day since the throes of September's sell-off after the government's monthly employment report showed labor conditions remained tight last month despite a slowdown in hiring — dashing any hopes the Federal Reserve will pivot on its aggressive rate hiking path.
-
-The U.S. economy added 263,000 jobs last month as the unemployment rate fell to 3.5%. Economists expected a payroll gain of 255,000 and for unemployment to hold at 3.7%, per consensus estimates compiled by Bloomberg.
-
-The S&P 500 (^GSPC) plunged 2.8%, while the Dow Jones Industrial Average (^DJI) shed 630 points, or 2.1%. The Nasdaq Composite (^IXIC) led the way down at a decline oof 3.8%. Meanwhile in the bond market, Treasury yields spiked, with the benchmark 10-year note back near 3.9% and the rate-sensitive 2-year yield topping 4.3%.`,
+      ml: "",
+      question: "",
+      passage: "",
       predictions: [],
-      history: [],
-
+      history: []
     }
   },
   computed: {
@@ -38,20 +23,26 @@ The S&P 500 (^GSPC) plunged 2.8%, while the Dow Jones Industrial Average (^DJI) 
   },
   methods: {
     async getPredictions() {
-      console.log('getPredictions');
-      console.log(this.question);
-      console.log(this.passage);
-      const ml = await qna.load();
-      const ans = await ml.findAnswers(this.question, this.passage);
+      // console.log('getPredictions');
+      // console.log(this.question);
+      // console.log(this.passage);
+
+      // const ml = await qna.load();      
+      // const ans = await ml.findAnswers(this.question, this.passage);
+      const ans = await this.ml.findAnswers(this.question, this.passage);
       console.log(ans);
       this.predictions = ans;
       this.history = [{ question: this.question, predictions: this.predictions }, ...this.history];
     },
 
   },
-  mounted() {
-    console.log('mounted');
-
+  async mounted() {
+    const ml = await qna.load();
+    this.ml = Object.freeze(ml);//To prevent wrapping in proxy. 
+    // console.log('mounted');
+    this.passage = `U.S. stocks cratered on Friday in their worst day since the throes of September's sell-off after the government's monthly employment report showed labor conditions remained tight last month despite a slowdown in hiring — dashing any hopes the Federal Reserve will pivot on its aggressive rate hiking path.
+The U.S. economy added 263,000 jobs last month as the unemployment rate fell to 3.5%. Economists expected a payroll gain of 255,000 and for unemployment to hold at 3.7%, per consensus estimates compiled by Bloomberg.
+The S&P 500 (^GSPC) plunged 2.8%, while the Dow Jones Industrial Average (^DJI) shed 630 points, or 2.1%. The Nasdaq Composite (^IXIC) led the way down at a decline oof 3.8%. Meanwhile in the bond market, Treasury yields spiked, with the benchmark 10-year note back near 3.9% and the rate-sensitive 2-year yield topping 4.3%.`;
   }
 
 }
@@ -69,8 +60,7 @@ The S&P 500 (^GSPC) plunged 2.8%, while the Dow Jones Industrial Average (^DJI) 
         </div>
         <div class="form-group">
           <label for="txtQuestion">Question</label>
-          <div id="divQuestion" class="row"><input type="text" id="txtQuestion" placeholder="Question"
-              v-model="question">
+          <div id="divQuestion" class="row"><input type="text" id="txtQuestion" v-model="question">
           </div>
         </div>
         <button class="btn btn-primary" v-on:click="getPredictions">Answer!</button>
@@ -78,8 +68,7 @@ The S&P 500 (^GSPC) plunged 2.8%, while the Dow Jones Industrial Average (^DJI) 
       </div>
       <div class="col-5">
         <div v-for="h in history">
-          <!-- <Transition> -->
-          <div class="card" >
+          <div class="card">
             <div class="card-header text-white bg-secondary">
               {{h.question}}
             </div>
@@ -90,7 +79,6 @@ The S&P 500 (^GSPC) plunged 2.8%, while the Dow Jones Industrial Average (^DJI) 
               Answer unknown!
             </div>
           </div>
-          <!-- </Transition> -->
         </div>
       </div>
     </div>
@@ -102,6 +90,4 @@ The S&P 500 (^GSPC) plunged 2.8%, while the Dow Jones Industrial Average (^DJI) 
   /* padding: 1em; */
   margin: 0.5em;
 }
-
-
 </style>

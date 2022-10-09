@@ -44,15 +44,13 @@
   <footer class="text-muted py-5">
     <div class="container">
       <p class="float-end mb-1">
-        <a href="www.linkedin.com/in/moatazmedhat">ElQadi on Linkedin</a>
+        <a href="https://www.linkedin.com/in/moatazmedhat">ElQadi on Linkedin</a>
       </p>
       <p class="mb-1">&copy; ElQadi, 2022</p>
     </div>
   </footer>
 </template>
 <script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import HelloWorld from './components/HelloWorld.vue'
 import QnA from './components/QnA.vue'
 </script>
