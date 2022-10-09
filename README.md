@@ -1,8 +1,2 @@
-# Vue 3 + Vite
-
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
-
-## Recommended IDE Setup
-
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
 # bert_qna_js
+A natural language processing (NLP) project to answer comprehension questions on a passage. The project is built on TesnorFlow for javascript (TFJS) and VueJS, the TF model is BERT pretrained on SQUAD 2.0 dataset.
