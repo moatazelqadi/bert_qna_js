@@ -7,7 +7,7 @@ export default {
   name: 'QnA',
   data() {
     return {
-      ml: "",
+      ml: null,
       question: "",
       passage: "",
       predictions: [],
@@ -63,8 +63,10 @@ The S&P 500 (^GSPC) plunged 2.8%, while the Dow Jones Industrial Average (^DJI) 
           <div id="divQuestion" class="row"><input type="text" id="txtQuestion" v-model="question">
           </div>
         </div>
-        <button class="btn btn-primary" v-on:click="getPredictions">Answer!</button>
-
+        <button class="btn btn-primary" v-if="ml !=null & passage != '' & question !='' " v-on:click="getPredictions">Answer!</button>
+        <div id = "divLoading" v-if="ml == null" class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
       </div>
       <div class="col-5">
         <div v-for="h in history">
