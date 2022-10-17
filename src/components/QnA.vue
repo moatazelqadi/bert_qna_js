@@ -7,6 +7,11 @@ export default {
   name: 'QnA',
   data() {
     return {
+      title: "Question answering demo",
+      description: `A natural language processing (NLP) project to answer comprehension questions on a
+            passage.
+            The project is built on TesnorFlow for javascript (TFJS) and VueJS, the TF model is BERT
+            pretrained on SQUAD 2.0 dataset.`,
       ml: null,
       question: "",
       passage: "",
@@ -48,43 +53,60 @@ The S&P 500 (^GSPC) plunged 2.8%, while the Dow Jones Industrial Average (^DJI) 
 }
 </script>
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="col-7">
 
-        <div class="form-group">
-          <label for="txtPassage">Passage</label>
-          <div id="divPassage" class="row"><textarea rows="10" id="txtPassage" placeholder="Passage"
-              v-model="passage"></textarea>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="txtQuestion">Question</label>
-          <div id="divQuestion" class="row"><input type="text" id="txtQuestion" v-model="question">
-          </div>
-        </div>
-        <button class="btn btn-primary" v-if="ml !=null & passage != '' & question !='' " v-on:click="getPredictions">Answer!</button>
-        <div id = "divLoading" v-if="ml == null" class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
+  <main>
+    <section class="py-5 text-center container">
+      <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+          <h1 class="fw-light">{{title}}</h1>
+          <p class="lead text-muted">{{description}}</p>
+
         </div>
       </div>
-      <div class="col-5">
-        <div v-for="h in history">
-          <div class="card">
-            <div class="card-header text-white bg-secondary">
-              {{h.question}}
+    </section>
+
+    <div class="py-5 bg-light">
+
+      <div class="container">
+        <div class="row">
+          <div class="col-7">
+
+            <div class="form-group">
+              <label for="txtPassage">Passage</label>
+              <div id="divPassage" class="row"><textarea rows="10" id="txtPassage" placeholder="Passage"
+                  v-model="passage"></textarea>
+              </div>
             </div>
-            <ul class="list-group list-group-flush" v-if="h.predictions.length > 0">
-              <li class="list-group-item" v-for="p in h.predictions">{{p.text}}</li>
-            </ul>
-            <div class="text-danger" v-if="h.predictions.length == 0">
-              Answer unknown!
+            <div class="form-group">
+              <label for="txtQuestion">Question</label>
+              <div id="divQuestion" class="row"><input type="text" id="txtQuestion" v-model="question">
+              </div>
+            </div>
+            <button class="btn btn-primary" v-if="ml !=null & passage != '' & question !='' "
+              v-on:click="getPredictions">Answer!</button>
+            <div id="divLoading" v-if="ml == null" class="spinner-border" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+          <div class="col-5">
+            <div v-for="h in history">
+              <div class="card">
+                <div class="card-header text-white bg-secondary">
+                  {{h.question}}
+                </div>
+                <ul class="list-group list-group-flush" v-if="h.predictions.length > 0">
+                  <li class="list-group-item" v-for="p in h.predictions">{{p.text}}</li>
+                </ul>
+                <div class="text-danger" v-if="h.predictions.length == 0">
+                  Answer unknown!
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </main>
 </template>
 
 <style scoped>
